@@ -132,16 +132,39 @@ export const getCategories = async () => {
     return result.categories;
 }
 
-export const submitComment = async (obj) => {
-  const result = await fetch('/api/comments', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(obj),
-  });
+// export const submitComment = async (obj) => {
+//   const result = await fetch('/api/comments', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(obj),
+//   });
 
-  return result.json();
+//   return result.json();
+// }
+
+export const submitComment = async (obj) => {
+  try {
+    const response = await fetch('/api/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(obj),
+    });
+
+    if (!response.ok) {
+      throw new Error('Fetch request failed');
+    }
+
+    const result = await response.json();
+    console.log('Response:', result);
+    return result;
+  } catch (error) {
+    console.log('Error:', error);
+    throw error;
+  }
 }
 
 export const getComments = async (slug) => {
